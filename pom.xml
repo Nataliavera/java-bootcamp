@@ -23,5 +23,6 @@
 
 	<modules>
 		<module>app-web</module>
+		<module>practicas-semanales</module>
 	</modules>
 </project>
