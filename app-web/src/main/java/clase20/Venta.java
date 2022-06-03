@@ -1,6 +1,7 @@
 package clase20;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Venta {
 //GET -> OBJETOS INMUTABLES 
@@ -41,13 +42,24 @@ public class Venta {
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+//IDENTIFICADOR UNICO A NIVEL DE MEMORIA
+		return Objects.hash(fecha, idVendedor, monto);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
+//		LOGICA DE NEGOCIO
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Venta other = (Venta) obj;
+//		SOLO MIRO EL ID
+		return this.idVendedor.equals(other.getIdVendedor());
 	}
+
+
+	
 }
