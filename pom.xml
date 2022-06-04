@@ -25,5 +25,8 @@
 		<module>app-web</module>
 		<module>practicas-semanales</module>
 		<module>practicas</module>
+		<module>app-services</module>
+		<module>app-daos</module>
+		<module>app-domain</module>
 	</modules>
 </project>
