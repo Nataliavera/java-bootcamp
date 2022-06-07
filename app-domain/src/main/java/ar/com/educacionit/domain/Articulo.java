@@ -1,16 +1,43 @@
 package ar.com.educacionit.domain;
 
+import java.util.Date;
+
 public class Articulo {
 
-	private Long id; 
-	private String nombre; 
+	private Long id;
+	private String titulo;
+	private String codigo;
+	private Date fechaCreacion;
 	private Double precio;
-	
-	public Articulo(Long id, String nombre, Double precio) {
+	private Long stock;
+	private Long marcasId;
+	private Long categoriasId;
+
+//	CONSTRUCTOR SIN ID YA QUE LA BASE DE DATOS SE ENCARGA DE GENERAR EL ID
+	public Articulo(String titulo, String codigo, Date fechaCreacion, Double precio, Long stock, Long marcasId,
+			Long categoriasId) {
+		super();
+		this.titulo = titulo;
+		this.codigo = codigo;
+		this.fechaCreacion = fechaCreacion;
+		this.precio = precio;
+		this.stock = stock;
+		this.marcasId = marcasId;
+		this.categoriasId = categoriasId;
+	}
+
+//	CONSTRUCTOR CON ID PARA CUANDO OBTENGA LOS DATOS 
+	public Articulo(Long id, String titulo, String codigo, Date fechaCreacion, Double precio2, Long stock2, Long marcasId2,
+			Long categoriasId2) {
 		super();
 		this.id = id;
-		this.nombre = nombre;
-		this.precio = precio;
+		this.titulo = titulo;
+		this.codigo = codigo;
+		this.fechaCreacion = fechaCreacion;
+		this.precio = precio2;
+		this.stock = stock2;
+		this.marcasId = marcasId2;
+		this.categoriasId = categoriasId2;
 	}
 
 	public Long getId() {
@@ -21,12 +48,28 @@ public class Articulo {
 		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
 	}
 
 	public Double getPrecio() {
@@ -37,11 +80,35 @@ public class Articulo {
 		this.precio = precio;
 	}
 
+	public Long getStock() {
+		return stock;
+	}
+
+	public void setStock(Long stock) {
+		this.stock = stock;
+	}
+
+	public Long getMarcasId() {
+		return marcasId;
+	}
+
+	public void setMarcasId(Long marcasId) {
+		this.marcasId = marcasId;
+	}
+
+	public Long getCategoriasId() {
+		return categoriasId;
+	}
+
+	public void setCategoriasId(Long categoriasId) {
+		this.categoriasId = categoriasId;
+	}
+
 	@Override
 	public String toString() {
-		return "Articulo [id=" + id + ", nombre=" + nombre + ", precio=" + precio + "]";
+		return "Articulo [id=" + id + ", titulo=" + titulo + ", codigo=" + codigo + ", fechaCreacion=" + fechaCreacion
+				+ ", precio=" + precio + ", stock=" + stock + ", marcasId=" + marcasId + ", categoriasId="
+				+ categoriasId + "]";
 	}
-	
-	
-	
+
 }

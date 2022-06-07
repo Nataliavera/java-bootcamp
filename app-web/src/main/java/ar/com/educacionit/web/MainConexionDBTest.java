@@ -23,9 +23,9 @@ public class MainConexionDBTest {
 		dao.create(o);
 		
 		ArticuloDao daoAr = new ArticuloDaoImpl();
-		Articulo ar = new Articulo(null, null, null); 
+//		Articulo ar = new Articulo(null, null, null); 
 		
-		daoAr.create(ar);
+//		daoAr.create(ar);
 		
 		SocioDao daoSo = new SocioDaoImpl();
 		Socio so = new Socio(null, null, null, null);
