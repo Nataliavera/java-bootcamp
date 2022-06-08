@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import ar.com.educacionit.daos.ArticuloDao;
 import ar.com.educacionit.daos.db.AdministradorDeConexiones;
+import ar.com.educacionit.daos.db.exceptions.DuplicatedException;
 import ar.com.educacionit.daos.db.exceptions.GenericException;
 import ar.com.educacionit.domain.Articulo;
 
@@ -27,9 +29,45 @@ public class ArticuloDaoMysqlImpl implements ArticuloDao {
 	}
 
 	@Override
-	public Articulo save(Articulo articulo) {
+	public void save(Articulo articulo) throws DuplicatedException, GenericException {
+// INSERT INTO ARTICULOS (COL1, COL2) VALUES()
 
-		return articulo;
+//		RS , SI PORQUE VOY A NECESITAR EL ID QUE SE GENERA EN LA DB
+		try (Connection con2 = AdministradorDeConexiones.obtenerConexion()) {
+
+			StringBuffer sql = new StringBuffer(
+					"INSERT INTO ARTICULOS (TITULO, CODIGO, FECHA_CREACION, PRECIO, STOCK, MARCA_ID, CATEGORIA_ID) VALUES(");
+			sql.append("?,?,?,?,?,?,?)");
+
+			try (PreparedStatement st = con2.prepareStatement(sql.toString(),
+					PreparedStatement.RETURN_GENERATED_KEYS)) {
+//				
+				st.setString(1, articulo.getTitulo());
+				st.setString(2, articulo.getCodigo());
+				st.setDate(3, new java.sql.Date(System.currentTimeMillis()));// java.sql.Date
+				st.setDouble(4, articulo.getPrecio());
+				st.setLong(5, articulo.getStock());
+				st.setLong(6, articulo.getMarcasId());
+				st.setLong(7, articulo.getCategoriasId());
+
+				st.execute(); // alt +shift + m
+				try (ResultSet rs = st.getGeneratedKeys()) {
+					if (rs.next()) {
+						Long id = rs.getLong(1);
+
+						articulo.setId(id);
+					}
+				}
+			}
+		} catch (SQLException se) {
+			if (se instanceof SQLIntegrityConstraintViolationException) {
+				throw new DuplicatedException("No se ha podido insertar el articulo, integridad de datos violada", se);
+			}
+			throw new GenericException(se.getMessage(), se);
+		} catch (GenericException e) {
+			throw new GenericException(e.getMessage(), e);
+		}
+
 	}
 
 	@Override
@@ -66,7 +104,6 @@ public class ArticuloDaoMysqlImpl implements ArticuloDao {
 		} catch (SQLException e) {
 			throw new GenericException("No se pudo obtener el articulo id: " + id, e);
 		}
-
 	}
 
 	@Override
@@ -187,6 +224,38 @@ public class ArticuloDaoMysqlImpl implements ArticuloDao {
 		Long categoriasId = rs.getLong("CATEGORIA_ID");
 
 		return new Articulo(idArticulo, titulo, codigo, fechaCreacion, precio, stock, marcasId, categoriasId);
+	}
+
+	@Override
+	public Articulo getByCodigo(String codigo) throws GenericException {
+		try (Connection con = AdministradorDeConexiones.obtenerConexion()) {
+			String sql = "SELECT * FROM ARTICULOS WHERE CODIGO =?";
+				try (PreparedStatement st = con.prepareStatement(sql)) {
+					
+					st.setString(1, codigo);
+					
+					try (ResultSet rs = st.executeQuery()) {
+						Articulo articulo = null;
+						if (rs.next()) {
+							Long idArticulo = rs.getLong("ID");
+							String titulo = rs.getString("TITULO");
+							String codigo2 = rs.getString("CODIGO");
+							Date fechaCreacion = rs.getDate("FECHA_CREACION");
+							Double precio = rs.getDouble("PRECIO");
+							Long stock = rs.getLong("STOCK");
+							Long marcasId = rs.getLong("MARCA_ID");
+							Long categoriasId = rs.getLong("CATEGORIA_ID");
+
+							articulo = new Articulo(idArticulo, titulo, codigo2, fechaCreacion, precio, stock, marcasId,
+									categoriasId);
+
+						}
+						return articulo;
+					}
+				}
+			} catch (SQLException e) {
+				throw new GenericException("No se pudo obtener el articulo codigo: " + codigo, e);
+			}
 	}
 
 }
