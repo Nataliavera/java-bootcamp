@@ -15,7 +15,7 @@ public class ArticuloController {
 		
 //		TODO IMPLEMENTAR UN MENU DE ACCIONES 
 		try {
-			List<Articulo> list = service.obtenerTodos();
+			List<Articulo> list = service.findAll();
 			
 			/*if(!list.isEmpty()) {
 				Articulo articulo = service.getById(list.get(0).getId());
