@@ -18,7 +18,7 @@ public class InsertArticulo {
 
 		System.out.println("Ingrese los datos del articulo: ");
 //		LEER LOS DATOS DEL ARTICULO
-		System.err.println("Precio:");
+		System.out.println("Precio:");
 		Double precio = teclado.nextDouble();
 		System.out.println("titulo: ");
 		String titulo = teclado.next();
@@ -31,10 +31,10 @@ public class InsertArticulo {
 		System.out.println("Categoria:");
 		Long categoriaId = teclado.nextLong();
 
+		teclado.close();
 		Articulo nuevo = new Articulo(titulo, codigo, null, precio, stock, marcaId, categoriaId);
 
 //		INSERTARLO 
-
 //		PUEDO HACERLO PERO NO DEBO 
 		ArticuloDao artDao = new ArticuloDaoMysqlImpl();
 
@@ -63,6 +63,6 @@ public class InsertArticulo {
 				System.err.println(e1.getMessage() + "," + e1.getCause().getMessage());
 			}
 		}
+		
 	}
-
 }

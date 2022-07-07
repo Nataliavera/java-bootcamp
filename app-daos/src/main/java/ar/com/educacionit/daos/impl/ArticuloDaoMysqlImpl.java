@@ -4,12 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 
 import ar.com.educacionit.daos.ArticuloDao;
 import ar.com.educacionit.daos.db.AdministradorDeConexiones;
-import ar.com.educacionit.daos.db.exceptions.DuplicatedException;
 import ar.com.educacionit.daos.db.exceptions.GenericException;
 import ar.com.educacionit.domain.Articulo;
 
@@ -20,45 +18,19 @@ public class ArticuloDaoMysqlImpl extends JDBCBaseDao<Articulo> implements Artic
 	}
 
 	@Override
-	public void save(Articulo articulo) throws DuplicatedException, GenericException {
-// INSERT INTO ARTICULOS (COL1, COL2) VALUES()
+	public String getSaveSQL() {
+		return "(TITULO, CODIGO, FECHA_CREACION, PRECIO, STOCK, MARCA_ID, CATEGORIA_ID) VALUES (?,?,?,?,?,?,?)";
+	}
 
-//		RS , SI PORQUE VOY A NECESITAR EL ID QUE SE GENERA EN LA DB
-		try (Connection con2 = AdministradorDeConexiones.obtenerConexion()) {
-
-			StringBuffer sql = new StringBuffer(
-					"INSERT INTO ARTICULOS (TITULO, CODIGO, FECHA_CREACION, PRECIO, STOCK, MARCA_ID, CATEGORIA_ID) VALUES(");
-			sql.append("?,?,?,?,?,?,?)");
-
-			try (PreparedStatement st = con2.prepareStatement(sql.toString(),
-					PreparedStatement.RETURN_GENERATED_KEYS)) {
-//				
-				st.setString(1, articulo.getTitulo());
-				st.setString(2, articulo.getCodigo());
-				st.setDate(3, new java.sql.Date(System.currentTimeMillis()));// java.sql.Date
-				st.setDouble(4, articulo.getPrecio());
-				st.setLong(5, articulo.getStock());
-				st.setLong(6, articulo.getMarcasId());
-				st.setLong(7, articulo.getCategoriasId());
-
-				st.execute(); // alt +shift + m
-				try (ResultSet rs = st.getGeneratedKeys()) {
-					if (rs.next()) {
-						Long id = rs.getLong(1);
-
-						articulo.setId(id);
-					}
-				}
-			}
-		} catch (SQLException se) {
-			if (se instanceof SQLIntegrityConstraintViolationException) {
-				throw new DuplicatedException("No se ha podido insertar el articulo, integridad de datos violada", se);
-			}
-			throw new GenericException(se.getMessage(), se);
-		} catch (GenericException e) {
-			throw new GenericException(e.getMessage(), e);
-		}
-
+	@Override
+	public void saveData(Articulo entity, PreparedStatement pst) throws SQLException {
+		pst.setString(1, entity.getTitulo());
+		pst.setString(2, entity.getCodigo());
+		pst.setDate(3, new java.sql.Date(System.currentTimeMillis()));// java.sql.Date
+		pst.setDouble(4, entity.getPrecio());
+		pst.setLong(5, entity.getStock());
+		pst.setLong(6, entity.getMarcasId());
+		pst.setLong(7, entity.getCategoriasId());
 	}
 
 	@Override
@@ -165,6 +137,55 @@ public class ArticuloDaoMysqlImpl extends JDBCBaseDao<Articulo> implements Artic
 		} catch (SQLException e) {
 			throw new GenericException("No se pudo obtener el articulo codigo: " + codigo, e);
 		}
+	}
+
+	@Override
+	public void updateData(Articulo entity, PreparedStatement st) throws SQLException {
+		if (entity.getTitulo() != null) {
+			st.setString(1, entity.getTitulo());
+		}
+		if (entity.getCodigo() != null) {
+			st.setString(2, entity.getCodigo());
+		}
+		if (entity.getPrecio() != null) {
+			st.setDouble(3, entity.getPrecio());
+		}
+		if (entity.getStock() != null) {
+			st.setLong(4, entity.getStock());
+		}
+		if (entity.getMarcasId() != null) {
+			st.setLong(5, entity.getMarcasId());
+		}
+		if (entity.getCategoriasId() != null) {
+			st.setLong(6, entity.getCategoriasId());
+		}
+
+	}
+
+	@Override
+	public String getUpdateSQL(Articulo entity) {
+		StringBuffer sql = new StringBuffer();
+
+		if (entity.getTitulo() != null) {
+			sql.append("TITULO=?").append(", ");
+		}
+		if (entity.getCodigo() != null) {
+			sql.append("CODIGO=?").append(", ");
+		}
+		if (entity.getPrecio() != null) {
+			sql.append("PRECIO=?").append(", ");
+		}
+		if (entity.getStock() != null) {
+			sql.append("STOCK=?").append(", ");
+		}
+		if (entity.getMarcasId() != null) {
+			sql.append("MARCA_ID?").append(", ");
+		}
+		if (entity.getCategoriasId() != null) {
+			sql.append("CATEGORIA_ID=?").append(",");
+		}
+
+		return sql.substring(0, sql.length() - 1).toString();
 	}
 
 }
