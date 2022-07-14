@@ -1,11 +1,8 @@
 package ar.com.educacionit.daos;
 
-import ar.com.educacionit.domain.Socio;
+import ar.com.educacionit.domain.Socios;
 
-public interface SocioDao {
+public interface SocioDao extends GenericDao<Socios>{
 
-	public Socio create(Socio socio);
-	public Socio read(Long dni);
-	public Socio update(Socio socioToUpdate);
-	public Socio delete(Long dni);
+	
 }

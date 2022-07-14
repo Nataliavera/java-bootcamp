@@ -5,10 +5,9 @@ import ar.com.educacionit.daos.OrdenDao;
 import ar.com.educacionit.daos.SocioDao;
 import ar.com.educacionit.daos.impl.ArticuloDaoMysqlImpl;
 import ar.com.educacionit.daos.impl.OrdenDaoImpl;
-import ar.com.educacionit.daos.impl.SocioDaoImpl;
-import ar.com.educacionit.domain.Articulo;
+import ar.com.educacionit.daos.impl.SocioDaoMySqlImpl;
 import ar.com.educacionit.domain.Orden;
-import ar.com.educacionit.domain.Socio;
+import ar.com.educacionit.domain.Socios;
 
 public class MainConexionDBTest {
 
@@ -27,8 +26,8 @@ public class MainConexionDBTest {
 		
 //		daoAr.create(ar);
 		
-		SocioDao daoSo = new SocioDaoImpl();
-		Socio so = new Socio(null, null, null, null);
+		SocioDao daoSo = new SocioDaoMySqlImpl();
+		Socios so = new Socios(null, null, null, null);
 	}
 
 }
