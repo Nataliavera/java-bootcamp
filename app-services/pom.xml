@@ -1,29 +1,31 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>ar.com.educacionit</groupId>
-    <artifactId>app-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>app-services</artifactId>
-  <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>ar.com.educacionit</groupId>
+		<artifactId>app-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>app-services</artifactId>
+	<properties>
 		<junit.jupiter.version>5.5.2</junit.jupiter.version>
 		<junit.platform.version>1.5.2</junit.platform.version>
 	</properties>
-  <name>modulo de servicios</name>
-  <dependencies>
-  	<dependency>
-  		<groupId>ar.com.educacionit</groupId>
-  		<artifactId>app-domain</artifactId>
-  		<version>1.0.0-SNAPSHOT</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>ar.com.educacionit</groupId>
-  		<artifactId>app-daos</artifactId>
-  		<version>1.0.0-SNAPSHOT</version>
-  	</dependency>
-  	
-  	<!--Pruebas unitarias -->
+	<name>modulo de servicios</name>
+	<dependencies>
+		<dependency>
+			<groupId>ar.com.educacionit</groupId>
+			<artifactId>app-domain</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>ar.com.educacionit</groupId>
+			<artifactId>app-daos</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<!--Pruebas unitarias -->
 		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -37,5 +39,17 @@
 			<version>${junit.platform.version}</version>
 			<scope>test</scope>
 		</dependency>
-  </dependencies>
+
+		<!-- apache poi-> lectura de archivos binarios -->
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.2</version>
+		</dependency>
+
+
+
+
+	</dependencies>
 </project>

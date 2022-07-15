@@ -1,6 +1,6 @@
 package ar.com.educacioit.daos;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -116,10 +116,10 @@ public class ArticuloDaoTestCare {
 		
 		art.save(newArticulo);
 		
-//		assertThrows(DuplicatedException.class, () -> {
-//			newArticulo.setCodigo("codigo1002");
-//			art.save(newArticulo);			
-//		});
+		assertThrows(DuplicatedException.class, () -> {
+			newArticulo.setCodigo("codigo1002");
+			art.save(newArticulo);			
+		});
 		
 	}
 }
